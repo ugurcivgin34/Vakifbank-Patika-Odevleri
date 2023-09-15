@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using System.Xml.Linq;
 using VF.Patika_W1.API.Model.Dtos;
 using VF.Patika_W1.API.Model.Entity;
 using VF.Patika_W1.API.Service;
@@ -95,6 +96,20 @@ namespace VF.Patika_W1.API.Controllers
             _products.Remove(existingProduct);
 
             return NoContent();
+        }
+
+        [HttpGet("sort")]
+        public ActionResult<IEnumerable<ProductDTO>> Sort([FromQuery] string sortBy)
+        {
+            try
+            {
+                var products = _productService.SortProducts(sortBy);
+                return products.Select(p => new ProductDTO { Id = p.Id, Name = p.Name }).ToList();
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
     }
 }

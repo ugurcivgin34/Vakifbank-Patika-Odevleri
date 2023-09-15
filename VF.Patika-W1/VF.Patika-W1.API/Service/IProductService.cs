@@ -5,6 +5,7 @@ namespace VF.Patika_W1.API.Service
     public interface IProductService
     {
         IEnumerable<Product> ListProducts(string name);
+        IEnumerable<Product> SortProducts(string sortBy);
         Product GetProductById(int id);
         Product AddProduct(Product product);
         void UpdateProduct(Product product);

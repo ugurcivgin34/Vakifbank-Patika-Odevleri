@@ -51,5 +51,29 @@ namespace VF.Patika_W1.API.Service
                 _products.Remove(product);
             }
         }
+        public IEnumerable<Product> SortProducts(string sortBy)
+        {
+            var products = _products.AsQueryable();
+
+            if (string.IsNullOrEmpty(sortBy))
+            {
+                sortBy = "name"; // default sıralama
+            }
+
+            switch (sortBy.ToLower())
+            {
+                case "name":
+                    products = products.OrderBy(p => p.Name);
+                    break;
+                case "id":
+                    products = products.OrderBy(p => p.Id);
+                    break;
+                default:
+                    throw new ArgumentException("Invalid sort value");
+            }
+
+            return products.ToList();
+        }
+
     }
 }
