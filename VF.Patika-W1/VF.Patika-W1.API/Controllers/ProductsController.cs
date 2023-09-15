@@ -22,6 +22,9 @@ namespace VF.Patika_W1.API.Controllers
             _productService = productService;
         }
 
+        /// <summary>
+        /// Ürünleri listelemek ve filtrelemek için kullanılan endpoint.
+        /// </summary>
         [HttpGet("list")]
         public ActionResult<IEnumerable<ProductDTO>> List([FromQuery] string name)
         {
@@ -35,6 +38,9 @@ namespace VF.Patika_W1.API.Controllers
             return products.Select(p => new ProductDTO { Id = p.Id, Name = p.Name }).ToList();
         }
 
+        /// <summary>
+        /// Ürünleri belirtilen kritere göre sıralamak için kullanılan endpoint.
+        /// </summary>
         [HttpGet("{id}")]
         public ActionResult<ProductDTO> Get(int id)
         {
@@ -45,6 +51,11 @@ namespace VF.Patika_W1.API.Controllers
             return new ProductDTO { Id = product.Id, Name = product.Name };
         }
 
+        /// <summary>
+        /// Yeni bir ürün ekleyen endpoint.
+        /// </summary>
+        /// <param name="product">Eklenen ürün.</param>
+        /// <returns>Eklenen ürünün detayları.</returns>
         [HttpPost]
         public ActionResult<ProductDTO> Create(Product product)
         {
@@ -56,6 +67,12 @@ namespace VF.Patika_W1.API.Controllers
             return CreatedAtAction(nameof(Get), new { id = product.Id }, new ProductDTO { Id = product.Id, Name = product.Name });
         }
 
+        /// <summary>
+        /// Bir ürünü güncelleyen endpoint.
+        /// </summary>
+        /// <param name="id">Güncellenen ürünün ID'si.</param>
+        /// <param name="product">Güncel ürün bilgileri.</param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public IActionResult Update(int id, Product product)
         {
@@ -68,6 +85,12 @@ namespace VF.Patika_W1.API.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Bir ürünü kısmi olarak güncelleyen endpoint.
+        /// </summary>
+        /// <param name="id">Güncellenen ürünün ID'si.</param>
+        /// <param name="patchDoc">JSON Patch belgesi ile güncellenen özellikler.</param>
+        /// <returns></returns>
         [HttpPatch("{id}")]
         public IActionResult Patch(int id, [FromBody] JsonPatchDocument<Product> patchDoc)
         {
@@ -86,6 +109,11 @@ namespace VF.Patika_W1.API.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Belirtilen ürünü silen endpoint.
+        /// </summary>
+        /// <param name="id">Silinen ürünün ID'si.</param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
@@ -98,6 +126,11 @@ namespace VF.Patika_W1.API.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Ürünleri belirli bir kritere göre sıralayan endpoint.
+        /// </summary>
+        /// <param name="sortBy">Sıralama kriteri.</param>
+        /// <returns>Sıralanmış ürün listesi.</returns>
         [HttpGet("sort")]
         public ActionResult<IEnumerable<ProductDTO>> Sort([FromQuery] string sortBy)
         {

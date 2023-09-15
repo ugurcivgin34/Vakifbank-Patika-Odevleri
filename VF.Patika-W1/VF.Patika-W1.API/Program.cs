@@ -29,13 +29,17 @@ app.UseExceptionHandler(appError =>
 {
     appError.Run(async context =>
     {
+        // Yanýtýn türünü JSON olarak ayarlar.
         context.Response.ContentType = "application/json";
+
+        // Hata detaylarýný alýr.
         var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
 
         if (contextFeature != null)
         {
             if (contextFeature.Error is ValidationException)
             {
+                // Geçerlilik istisnasý oluþtuysa, HTTP 400 Bad Request yanýtý gönderir.
                 context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 await context.Response.WriteAsync(new
                 {
@@ -45,6 +49,7 @@ app.UseExceptionHandler(appError =>
             }
             else
             {
+                // Diðer türde hata oluþtuysa, HTTP 500 Internal Server Error yanýtý gönderir.
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 await context.Response.WriteAsync(new
                 {
@@ -55,6 +60,7 @@ app.UseExceptionHandler(appError =>
         }
     });
 });
+
 
 
 app.Run();
